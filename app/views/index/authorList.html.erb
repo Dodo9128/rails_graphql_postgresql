@@ -1,0 +1,27 @@
+<p id="authorList"><%= notice %></p>
+
+<h1>Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |users| %>
+      <tr>
+        <td><%= users.first_name %></td>
+        <td><%= users.last_name %></td>
+        </tr>
+        <% end %>
+        </tbody>
+        <td><%=link_to "Add New User", "/signin/new" %></td>
+                <td><%=link_to "Go To Main", "/" %></td>
+
+</table>
+
+<br>
+

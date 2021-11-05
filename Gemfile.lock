@@ -80,13 +80,36 @@ GEM
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     erubi (1.10.0)
+    faraday (1.8.0)
+      faraday-em_http (~> 1.0)
+      faraday-em_synchrony (~> 1.0)
+      faraday-excon (~> 1.1)
+      faraday-httpclient (~> 1.0.1)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
+      faraday-patron (~> 1.0)
+      faraday-rack (~> 1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords (>= 0.0.4)
+    faraday-em_http (1.0.0)
+    faraday-em_synchrony (1.0.0)
+    faraday-excon (1.1.0)
+    faraday-httpclient (1.0.1)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.2.0)
+    faraday-patron (1.0.0)
+    faraday-rack (1.0.0)
+    faraday_middleware (1.2.0)
+      faraday (~> 1.0)
     ffi (1.15.4)
+    gli (2.20.1)
     globalid (0.5.2)
       activesupport (>= 5.0)
     graphiql-rails (1.8.0)
       railties
       sprockets-rails
     graphql (1.12.18)
+    hashie (4.1.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -105,6 +128,7 @@ GEM
     mini_mime (1.1.2)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multipart-post (2.1.1)
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
@@ -152,6 +176,7 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.1.1)
     rexml (3.2.5)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -168,6 +193,13 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    slack-incoming-webhooks (0.3.0)
+    slack-ruby-client (0.17.0)
+      faraday (>= 1.0)
+      faraday_middleware
+      gli
+      hashie
+      websocket-driver
     spring (3.0.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -221,6 +253,8 @@ DEPENDENCIES
   rails (~> 6.1.4, >= 6.1.4.1)
   sass-rails (>= 6)
   selenium-webdriver
+  slack-incoming-webhooks
+  slack-ruby-client
   spring
   turbolinks (~> 5)
   tzinfo-data
