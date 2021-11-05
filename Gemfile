@@ -65,3 +65,5 @@ gem 'graphiql-rails', group: :development
 gem 'slack-incoming-webhooks'
 
 gem 'slack-ruby-client'
+
+gem 'rubocop'
