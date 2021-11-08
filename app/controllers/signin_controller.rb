@@ -28,8 +28,10 @@ class SigninController < ApplicationController
 
     uri =
       URI(
-        'https://hooks.slack.com/services/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',
+        'https://hooks.slack.com/services/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',
       )
+
+    # Slack_Testing_Alert_Bot_3
 
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       req = Net::HTTP::Post.new(uri)
@@ -39,6 +41,8 @@ class SigninController < ApplicationController
       text = 'text'
       context =
         "*새로운 회원이 가입하였습니다.* 이름 : #{user_params['first_name']} #{user_params['last_name']}, 생일 : #{user_params['date_of_birth(1i)']}-#{user_params['date_of_birth(2i)']}-#{user_params['date_of_birth(3i)']}"
+
+      puts req.body
 
       req.body = { text: context }.to_json
       http.request(req)

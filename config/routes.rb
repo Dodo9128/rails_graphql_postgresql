@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   end
   get '/', to: 'index#index'
 
-  get '/author', to: 'index#authorList'
+  get '/author', to: 'index#author_list'
 
   post '/signin/new', to: 'signin#create'
 
