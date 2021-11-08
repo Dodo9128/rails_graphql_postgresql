@@ -13,13 +13,16 @@
       <tr>
         <td><%= users.first_name %></td>
         <td><%= users.last_name %></td>
-      <td><%= link_to "#{users.first_name} #{users.last_name}'s Books", "/author/#{users.id}" %>
+      <td><%= link_to "#{users.first_name}'s Books", "/author/#{users.id}" %>
+      <td><%= link_to "Update UserInfo", "/author/update_info/#{users.id}" %>
+      <td><%= link_to "Withdrawal", "/author/withdrawal/#{users.id}", method: 'patch' %>
       </tr>
     <% end %>
   </tbody>
-  <td><%=link_to "Add New User", "/signin/new" %></td>
 </table>
-  <td><%=link_to "Go To Main", "/" %></td>
+<p></p>
+  <div><%=link_to "Add New User", "/signin/new" %></div>
+  <div><%=link_to "Go To Main", "/" %></div>
 
 <br>
 

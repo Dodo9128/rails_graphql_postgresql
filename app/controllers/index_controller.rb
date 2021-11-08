@@ -2,10 +2,11 @@
 
 class IndexController < ApplicationController
   def index
-    @msg = 'Hello World'
+    @msg = "User & User's Book CRUD Practice"
   end
 
   def author_list
-    @users = Author.all.order(:id)
+    @users = Author.where(deleted_at: nil).order(:id)
+    # @users = Author.all.order(:id)
   end
 end

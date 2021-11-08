@@ -28,7 +28,7 @@ class SigninController < ApplicationController
 
     uri =
       URI(
-        'https://hooks.slack.com/services/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',
+        'https://hooks.slack.com/services/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',
       )
 
     # Slack_Testing_Alert_Bot_3
@@ -36,13 +36,18 @@ class SigninController < ApplicationController
     Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
       req = Net::HTTP::Post.new(uri)
       req.content_type = 'application/json'
+      req['Authorization'] =
+        'xoxb-2685224176675-2681655594119-HBpigG01WHKqvj4J7Son3qKA'
+
+      # {
+      #   "Content-type" : "application/json",
+      #   "Authorization" : "Bearer xoxb-2685224176675-2681655594119-HBpigG01WHKqvj4J7Son3qKA"
+      # }
 
       # req.body = "{ 'text' : '<!channel> *새로운 노트가 생성되었습니다.* 제목 : #{note_params["title"]}, 내용 : #{note_params["context"]}'}"
       text = 'text'
       context =
         "*새로운 회원이 가입하였습니다.* 이름 : #{user_params['first_name']} #{user_params['last_name']}, 생일 : #{user_params['date_of_birth(1i)']}-#{user_params['date_of_birth(2i)']}-#{user_params['date_of_birth(3i)']}"
-
-      puts req.body
 
       req.body = { text: context }.to_json
       http.request(req)
