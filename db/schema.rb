@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_11_05_020800) do
     t.string "first_name"
     t.string "last_name"
     t.date "date_of_birth"
+    t.date "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(version: 2021_11_05_020800) do
     t.bigint "author_id", null: false
     t.integer "publication_date"
     t.string "genre"
+    t.date "deleted_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["author_id"], name: "index_books_on_author_id"

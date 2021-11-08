@@ -1,5 +1,3 @@
-<p id="authorList"><%= notice %></p>
-
 <h1>Users</h1>
 
 <table>
@@ -15,6 +13,7 @@
       <tr>
         <td><%= users.first_name %></td>
         <td><%= users.last_name %></td>
+      <td><%= link_to "#{users.first_name} #{users.last_name}'s Books", "/author/#{users.id}" %>
       </tr>
     <% end %>
   </tbody>

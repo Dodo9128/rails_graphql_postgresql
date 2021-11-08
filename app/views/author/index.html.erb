@@ -1,0 +1,26 @@
+<h1>
+<%= "#{@user.first_name} #{@user.last_name} 's Books" %>
+</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Book Name</th>
+      <th>Genre</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @books.each do |books| %>
+      <tr>
+        <td><%= books.title %></td>
+        <td><%= books.genre %></td>
+      </tr>
+    <% end %>
+  </tbody>
+  <td><%=link_to "Add New Book (수정해야해)", "/signin/new" %></td>
+</table>
+  <td><%=link_to "Go To User List Page", "/author" %></td>
+
+<br>
+
