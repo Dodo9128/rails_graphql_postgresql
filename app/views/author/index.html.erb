@@ -16,7 +16,7 @@
       </tr>
     <% end %>
   </tbody>
-  <td><%=link_to "Add New Book (수정해야해)", "/signin/new" %></td>
+  <td><%=link_to "Add New Book", "/book/new/#{@user.id}" %></td>
 </table>
   <td><%=link_to "Go To User List Page", "/author" %></td>
 
