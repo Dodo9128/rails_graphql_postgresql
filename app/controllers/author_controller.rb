@@ -1,7 +1,8 @@
 class AuthorController < ApplicationController
   def index
     @user = Author.find(params[:id])
-    @books = Book.where('author_id = ?', @user.id)
+    @books =
+      Book.where('author_id = ?', @user.id).where(deleted_at: nil).order(:id)
   end
 
   def withdrawal
@@ -20,7 +21,7 @@ class AuthorController < ApplicationController
 
     uri =
       URI(
-        'https://hooks.slack.com/services/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',
+        'https://hooks.slack.com/services/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',
       )
 
     # Slack_Testing_Alert_Bot_3
@@ -29,7 +30,7 @@ class AuthorController < ApplicationController
       req = Net::HTTP::Post.new(uri)
       req.content_type = 'application/json'
       req['Authorization'] =
-        'xoxb-2685224176675-2681655594119-HBpigG01WHKqvj4J7Son3qKA'
+        'xoxb-2685224176675-2694181314949-Qa3jsnHR80tTMooo0zVW1Gbu'
 
       text = 'text'
       context =

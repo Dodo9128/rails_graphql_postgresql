@@ -25,5 +25,9 @@ Rails.application.routes.draw do
 
   post '/book/new/:id', to: 'book#create'
 
+  get '/book/delete/:id/:book_id', to: 'book#before_delete'
+
+  patch '/book/delete/:id/:book_id', to: 'book#delete'
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
