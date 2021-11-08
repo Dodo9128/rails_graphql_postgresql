@@ -1,0 +1,31 @@
+<h1><%= "#{@book.title} Info Change" %></h1>
+
+<%= form_with method: :patch do |form| %>
+
+ <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :publication_date %>
+    <%= form.select :publication_date, (Time.zone.now.year - 100)..(Time.zone.now.year + 1)  %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :genre %>
+    <%= form.text_field :genre %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :author_id, value: [params["id"]] %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+    </div>
+<% end %>
+
+<p>
+
+<%= link_to 'Back', "/author/#{@user.id}" %>

@@ -54,9 +54,31 @@ class BookController < ApplicationController
     # redirect_to "/author/#{@user.id}"
   end
 
-  def before_delete
+  def before_update
     @user = Author.find(params[:id])
     @book = Book.find(params[:book_id])
+  end
+
+  def update_book_info
+    @user = Author.find(params[:id])
+    @book = Book.find(params[:book_id])
+
+    change_title = user_params['title']
+    change_genre = user_params['genre']
+    change_publication_date = user_params['publication_date']
+
+    @book.update(
+      title: change_title,
+      genre: change_genre,
+      publication_date: change_publication_date,
+    )
+
+    respond_to do |format|
+      format.html do
+        redirect_to "/author/#{@user.id}", notice: 'Book update was success.'
+      end
+      # format.json { head :no_content }
+    end
   end
 
   def delete

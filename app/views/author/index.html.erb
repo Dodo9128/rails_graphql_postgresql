@@ -13,6 +13,7 @@
       <tr>
         <td><%= books.title %></td>
         <td><%= books.genre %></td>
+        <td><%= link_to "change info", "/book/info/#{@user.id}/#{books.id}", method: 'get' %></td>
         <td><%= link_to "delete", "/book/delete/#{@user.id}/#{books.id}", method: 'patch' %></td>
       </tr>
     <% end %>
