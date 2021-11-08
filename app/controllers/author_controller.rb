@@ -8,6 +8,11 @@ class AuthorController < ApplicationController
   def withdrawal
     @user = Author.find(params[:id])
     @user.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+    @userbooks = Book.where('author_id = ?', @user.id)
+
+    @userbooks.each do |userbook|
+      userbook.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+    end
 
     respond_to do |format|
       format.html do
