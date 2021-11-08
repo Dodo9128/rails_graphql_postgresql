@@ -10,6 +10,7 @@ class AuthorController < ApplicationController
     @user.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
     @userbooks = Book.where('author_id = ?', @user.id)
 
+    # user 삭제 시 user가 가진 book도 함께 삭제
     @userbooks.each do |userbook|
       userbook.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
     end
