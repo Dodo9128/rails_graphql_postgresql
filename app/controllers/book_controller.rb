@@ -4,12 +4,12 @@ class BookController < ApplicationController
   end
 
   def new
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
     @book = Book.new
   end
 
   def create
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
     @newbook = Book.new(user_params)
 
     respond_to do |format|
@@ -28,39 +28,16 @@ class BookController < ApplicationController
       end
     end
 
-    require 'net/http'
-
-    uri =
-      URI(
-        'https://hooks.slack.com/services/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',
-      )
-
-    # Slack_Testing_Alert_Bot_3
-
-    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      req = Net::HTTP::Post.new(uri)
-      req.content_type = 'application/json'
-      req['Authorization'] =
-        'xoxb-2685224176675-2694181314949-Qa3jsnHR80tTMooo0zVW1Gbu'
-
-      # req.body = "{ 'text' : '<!channel> *새로운 노트가 생성되었습니다.* 제목 : #{note_params["title"]}, 내용 : #{note_params["context"]}'}"
-      text = 'text'
-      context =
-        "유저 *#{@user['first_name']} #{@user['last_name']}* 께서 새로운 책 *#{user_params['title']}* 을 추가하였습니다."
-
-      req.body = { text: context }.to_json
-      http.request(req)
-    end
-    # redirect_to "/author/#{@user.id}"
+    SlackAlertModule.generate_book(@user, user_params)
   end
 
   def before_update
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
     @book = Book.find(params[:book_id])
   end
 
   def update_book_info
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
     @book = Book.find(params[:book_id])
 
     change_title = user_params['title']
@@ -82,8 +59,9 @@ class BookController < ApplicationController
   end
 
   def delete
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
     @book = Book.find(params[:book_id])
+    deletebook = @book['title']
     @book.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
 
     respond_to do |format|
@@ -92,8 +70,8 @@ class BookController < ApplicationController
                     notice:
                       "#{@user['first_name']} #{@user['last_name']}'s Book was successfully soft-deleted."
       end
-      # format.json { head :no_content }
     end
+    SlackAlertModule.delete_book(@user, deletebook)
   end
 
   private

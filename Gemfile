@@ -67,3 +67,5 @@ gem 'slack-incoming-webhooks'
 gem 'slack-ruby-client'
 
 gem 'rubocop'
+
+gem 'dotenv-rails'

@@ -1,16 +1,25 @@
 class AuthorController < ApplicationController
   def index
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
+    raise Errors::UnAuthorized if @user.nil?
+
     @books =
       Book.where('author_id = ?', @user.id).where(deleted_at: nil).order(:id)
   end
 
   def withdrawal
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
+    raise Errors::UnAuthorized if @user.nil?
+
     @user.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
-    @userbooks = Book.where('author_id = ?', @user.id)
 
     # user 삭제 시 user가 가진 book도 함께 삭제
+
+    @userbooks = Book.where('author_id = ?', @user.id)
+    if @userbooks.nil?
+      raise Exception.new "error message: #{@user.first_name} #{@user.last_name} has no books"
+    end
+
     @userbooks.each do |userbook|
       userbook.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
     end
@@ -19,40 +28,28 @@ class AuthorController < ApplicationController
       format.html do
         redirect_to '/author', notice: 'User was successfully soft-deleted.'
       end
-      # format.json { head :no_content }
+      format.json do
+        render json: {
+                 data: {
+                   user: "#{@user.first_name} #{@user.last_name}",
+                   message:
+                     "user #{@user.first_name} #{@user.last_name} has deleted",
+                 },
+               }
+      end
     end
 
     # Slack Alert logic
-    require 'net/http'
 
-    uri =
-      URI(
-        'https://hooks.slack.com/services/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',
-      )
-
-    # Slack_Testing_Alert_Bot_3
-
-    Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-      req = Net::HTTP::Post.new(uri)
-      req.content_type = 'application/json'
-      req['Authorization'] =
-        'xoxb-2685224176675-2694181314949-Qa3jsnHR80tTMooo0zVW1Gbu'
-
-      text = 'text'
-      context =
-        "*유저* #{@user.first_name} #{@user.last_name} *님이 탈퇴하였습니다.*"
-
-      req.body = { text: context }.to_json
-      http.request(req)
-    end
+    SlackAlertModule.user_withdrawal(@user)
   end
 
   def userinfo
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
   end
 
   def update_info
-    @user = Author.find(params[:id])
+    @user = Author.find_by(id: params[:id])
 
     change_first_name = user_params['first_name']
     change_last_name = user_params['last_name']
@@ -69,7 +66,13 @@ class AuthorController < ApplicationController
       format.html do
         redirect_to '/author', notice: 'UserInfo update was success.'
       end
-      # format.json { head :no_content }
+      render json: {
+               data: {
+                 user: "#{@user.first_name} #{@user.last_name}",
+                 message:
+                   "user #{@user.first_name} #{@user.last_name} 'info has changed",
+               },
+             }
     end
   end
 
