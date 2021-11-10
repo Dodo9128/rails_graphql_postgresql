@@ -1,82 +1,250 @@
 class BookController < ApplicationController
   def index
-    @users = Author.find(params[:id])
+    user = Author.find_by(id: params[:id])
+    if user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
   end
 
   def new
-    @user = Author.find_by(id: params[:id])
-    @book = Book.new
+    user = Author.find_by(id: params[:id])
+    if user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
   end
 
   def create
-    @user = Author.find_by(id: params[:id])
-    @newbook = Book.new(user_params)
+    user = Author.find_by(id: params[:id])
+    if user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
 
-    respond_to do |format|
-      if @newbook.save
-        format.html do
-          redirect_to "/author/#{@user.id}", notice: '책 생성 완료'
-        end
-        format.json do
-          render :show, status: :created, location: "/author/#{@user.id}"
-        end
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json do
-          render json: @newbook.errors, status: :unprocessable_entity
+    # 입력받은 모든 params 유효한지 확인
+    for elem in book_params
+      if elem[1].length == 0
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+          format.json do
+            render json: newbook.errors, status: :unprocessable_entity
+          end
+          request_method = request.request_method
+          request_fullpath = request.fullpath
+          SlackAlertModule.alert_error(
+            Errors::NOT_FOUND,
+            Errors::NOT_FOUND_MESSAGE,
+            request_method,
+            request_fullpath,
+          )
+          raise Errors::NotFound
         end
       end
     end
 
-    SlackAlertModule.generate_book(@user, user_params)
+    newbook = Book.new(book_params)
+
+    respond_to do |format|
+      if newbook.save
+        format.html { redirect_to "/author/#{user.id}" }
+        format.json do
+          render json: {
+                   show: {},
+                   status: :created,
+                   location: "/author/#{user.id}",
+                   data: {
+                     message:
+                       "#{user['first_name']} #{user['last_name']}'s Book was successfully soft-deleted.",
+                   },
+                 }
+        end
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json do
+          render json: newbook.errors, status: :unprocessable_entity
+        end
+        request_method = request.request_method
+        request_fullpath = request.fullpath
+        SlackAlertModule.alert_error(
+          Errors::NOT_FOUND,
+          Errors::NOT_FOUND_MESSAGE,
+          request_method,
+          request_fullpath,
+        )
+        raise Errors::NotFound
+      end
+    end
+    SlackAlertModule.generate_book(user, book_params)
   end
 
   def before_update
     @user = Author.find_by(id: params[:id])
-    @book = Book.find(params[:book_id])
+    if @user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
+    @book = Book.find_by(id: params[:book_id])
+    if @book.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::NotFound
+    end
   end
 
   def update_book_info
-    @user = Author.find_by(id: params[:id])
-    @book = Book.find(params[:book_id])
+    user = Author.find_by(id: params[:id])
+    if user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
 
-    change_title = user_params['title']
-    change_genre = user_params['genre']
-    change_publication_date = user_params['publication_date']
+    book = Book.find_by(id: params[:book_id])
+    if book.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::NotFound
+    end
 
-    @book.update(
+    # 입력받은 모든 params 유효한지 확인
+    for elem in book_params
+      if elem[1].length == 0
+        respond_to do |format|
+          format.html { render :new, status: :unprocessable_entity }
+          format.json do
+            render json: newbook.errors, status: :unprocessable_entity
+          end
+          request_method = request.request_method
+          request_fullpath = request.fullpath
+          SlackAlertModule.alert_error(
+            Errors::NOT_FOUND,
+            Errors::NOT_FOUND_MESSAGE,
+            request_method,
+            request_fullpath,
+          )
+          raise Errors::NotFound
+        end
+      end
+    end
+
+    change_title = book_params['title']
+    change_genre = book_params['genre']
+    change_publication_date = book_params['publication_date']
+
+    book.update(
       title: change_title,
       genre: change_genre,
       publication_date: change_publication_date,
     )
 
     respond_to do |format|
-      format.html do
-        redirect_to "/author/#{@user.id}", notice: 'Book update was success.'
+      format.html { redirect_to "/author/#{user.id}" }
+      format.json do
+        render json: {
+                 data: {
+                   message:
+                     "#{user['first_name']} #{user['last_name']}'s Book has updated.",
+                 },
+               }
       end
-      # format.json { head :no_content }
     end
   end
 
   def delete
-    @user = Author.find_by(id: params[:id])
-    @book = Book.find(params[:book_id])
-    deletebook = @book['title']
-    @book.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+    user = Author.find_by(id: params[:id])
+    if user.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::UNAUTHORIZED,
+        Errors::UNAUTHORIZED_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::UnAuthorized
+    end
+
+    book = Book.find_by(id: params[:book_id])
+    if book.nil?
+      request_method = request.request_method
+      request_fullpath = request.fullpath
+      SlackAlertModule.alert_error(
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        request_method,
+        request_fullpath,
+      )
+      raise Errors::NotFound
+    end
+
+    deletebook = book['title']
+
+    book.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
 
     respond_to do |format|
-      format.html do
-        redirect_to "/author/#{@user.id}",
-                    notice:
-                      "#{@user['first_name']} #{@user['last_name']}'s Book was successfully soft-deleted."
+      format.html { redirect_to "/author/#{user.id}" }
+      format.json do
+        render json: {
+                 data: {
+                   message:
+                     "#{user['first_name']} #{user['last_name']}'s Book was successfully soft-deleted.",
+                 },
+               }
       end
     end
-    SlackAlertModule.delete_book(@user, deletebook)
+    SlackAlertModule.delete_book(user, deletebook)
   end
 
   private
 
-  def user_params
+  def book_params
     params.permit(:title, :publication_date, :genre, :author_id)
   end
 end

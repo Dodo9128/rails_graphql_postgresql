@@ -63,7 +63,16 @@ module Errors
     def error_code
       UNAUTHORIZED
     end
-    SlackAlertModule.alert_error(UNAUTHORIZED, UNAUTHORIZED_MESSAGE)
+  end
+
+  class NotFound < StandardError
+    def message
+      NOT_FOUND_MESSAGE
+    end
+
+    def error_code
+      NOT_FOUND
+    end
   end
 
   class Forbidden < StandardError
