@@ -65,4 +65,8 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   RSpec.configure { |config| config.include FactoryBot::Syntax::Methods }
+
+  # def json_body
+  #   JSON.parse(response.body)
+  # end
 end

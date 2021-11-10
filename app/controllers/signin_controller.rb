@@ -23,7 +23,6 @@ class SigninController < ApplicationController
         end
       end
     end
-
     SlackAlertModule.user_signin(user_params)
   end
 
