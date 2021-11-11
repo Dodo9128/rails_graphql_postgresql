@@ -6,12 +6,12 @@ class AuthorController < ApplicationController
       request_method = request.request_method
       request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
         request_method,
         request_fullpath,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     @books =
@@ -35,12 +35,12 @@ class AuthorController < ApplicationController
       request_method = request.request_method
       request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
         request_method,
         request_fullpath,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     user.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
@@ -87,12 +87,12 @@ class AuthorController < ApplicationController
       request_method = request.request_method
       request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
         request_method,
         request_fullpath,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
   end
 
@@ -102,12 +102,12 @@ class AuthorController < ApplicationController
       request_method = request.request_method
       request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
         request_method,
         request_fullpath,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     # 입력받은 모든 params 유효한지 확인

@@ -1,4 +1,5 @@
 class RailsGraphqlPostgresqlSchema < GraphQL::Schema
+  # use GraphQL::PersistedQueries
   mutation(Types::MutationType)
   query(Types::QueryType)
 

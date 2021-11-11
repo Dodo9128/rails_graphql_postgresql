@@ -3,17 +3,40 @@ module SlackAlertModule
 
   # 유저 가입
   def self.user_signin(user_params)
-    slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
-    text =
-      "*새로운 회원이 가입하였습니다.* 이름 : #{user_params['first_name']} #{user_params['last_name']}, 생일 : #{user_params['date_of_birth(1i)']}-#{user_params['date_of_birth(2i)']}-#{user_params['date_of_birth(3i)']}"
-    slack.post text
+    # graphQL에서 넘어올 때 (user_params type == Hash)
+
+    if user_params.instance_of? Hash
+      first_name = user_params[:first_name]
+      last_name = user_params[:last_name]
+      date_of_birth = user_params[:date_of_birth]
+
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "*새로운 회원이 가입하였습니다.* 이름 : #{first_name} #{last_name}, 생일 : #{date_of_birth}"
+      slack.post text
+
+      # REST API 사용 시
+    else
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "*새로운 회원이 가입하였습니다.* 이름 : #{user_params['first_name']} #{user_params['last_name']}, 생일 : #{user_params['date_of_birth(1i)']}-#{user_params['date_of_birth(2i)']}-#{user_params['date_of_birth(3i)']}"
+      slack.post text
+    end
   end
 
   # 유저 탈퇴
   def self.user_withdrawal(user)
-    slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
-    text = "유저 *#{user.first_name} #{user.last_name}* 가 *탈퇴하였습니다.*"
-    slack.post text
+    if user.instance_of? Hash
+      first_name = user[:first_name]
+      last_name = user[:last_name]
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text = "유저 *#{first_name} #{last_name}* 가 *탈퇴하였습니다.*"
+      slack.post text
+    else
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text = "유저 *#{user.first_name} #{user.last_name}* 가 *탈퇴하였습니다.*"
+      slack.post text
+    end
   end
 
   # 책 생성

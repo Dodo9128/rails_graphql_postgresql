@@ -12,7 +12,7 @@
   
   <div class="field">
     <%= form.label :genre %>
-    <%= form.text_field :genre %>
+    <%= select_tag('genre',options_for_select((['Horror', 'Thriller', 'Harry_Potter', 'Comedy', 'Romance', 'Programming']), class:'Genre', selected: 'Horror'))%>
   </div>
 
   <div class="field">
