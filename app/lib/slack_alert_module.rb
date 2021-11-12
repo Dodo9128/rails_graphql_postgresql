@@ -41,25 +41,43 @@ module SlackAlertModule
 
   # 책 생성
   def self.generate_book(user, book_params)
-    slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
-    text =
-      "유저 *#{user['first_name']} #{user['last_name']}* 가 새로운 책 *#{book_params['title']}* 을 추가하였습니다."
-    slack.post text
+    if book_params.instance_of? Hash
+      title = book_params[:title]
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "유저 *#{user['first_name']} #{user['last_name']}* 가 새로운 책 *#{title}* 을 추가하였습니다."
+      slack.post text
+    else
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "유저 *#{user['first_name']} #{user['last_name']}* 가 새로운 책 *#{book_params['title']}* 을 추가하였습니다."
+      slack.post text
+    end
   end
 
   # 책 삭제
   def self.delete_book(user, deletebook)
-    slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
-    text =
-      "유저 *#{user['first_name']} #{user['last_name']}* 가 책 *#{deletebook}* 을 삭제하였습니다."
-    slack.post text
+    puts deletebook
+    if deletebook.instance_of? Hash
+      title = deletebook[:title]
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "유저 *#{user['first_name']} #{user['last_name']}* 가 책 *#{title}* 을 삭제하였습니다."
+      slack.post text
+    else
+      slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
+      text =
+        "유저 *#{user['first_name']} #{user['last_name']}* 가 책 *#{deletebook}* 을 삭제하였습니다."
+      slack.post text
+    end
   end
 
   # 에러 발생 시 에러코드, 에러 내용 슬랙 메세지로 전송
-  def self.alert_error(status_code, error_message, method, fullpath)
+
+  def self.alert_error(status_code, error_message, error_log)
     slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']
     text =
-      "*에러코드 #{status_code}* 의 *에러가 발생하였습니다.* \n Error Message : #{error_message} \n request_url : #{method} #{fullpath}"
+      "*에러코드 #{status_code}* 의 *에러가 발생하였습니다.* \n Error Message : #{error_message}, \n Error Log : #{error_log}"
     slack.post text
   end
 end

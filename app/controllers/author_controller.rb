@@ -3,13 +3,10 @@ class AuthorController < ApplicationController
     @user = Author.find_by(id: params[:id])
 
     if @user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -17,13 +14,10 @@ class AuthorController < ApplicationController
     @books =
       Book.where('author_id = ?', @user.id).where(deleted_at: nil).order(:id)
     if @books.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -32,13 +26,10 @@ class AuthorController < ApplicationController
   def withdrawal
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -49,13 +40,10 @@ class AuthorController < ApplicationController
 
     userbooks = Book.where('author_id = ?', user.id)
     if userbooks.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -84,13 +72,10 @@ class AuthorController < ApplicationController
   def userinfo
     @user = Author.find_by(id: params[:id])
     if @user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -99,13 +84,10 @@ class AuthorController < ApplicationController
   def update_info
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -118,13 +100,10 @@ class AuthorController < ApplicationController
           format.json do
             render json: newbook.errors, status: :unprocessable_entity
           end
-          request_method = request.request_method
-          request_fullpath = request.fullpath
           SlackAlertModule.alert_error(
             Errors::NOT_FOUND,
             Errors::NOT_FOUND_MESSAGE,
-            request_method,
-            request_fullpath,
+            Errors::NOT_FOUND_MESSAGE,
           )
           raise Errors::NotFound
         end

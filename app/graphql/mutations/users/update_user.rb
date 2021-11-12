@@ -9,12 +9,24 @@ module Mutations
       type Types::AuthorType
 
       def resolve(id:, **attributes)
-        update_user = Author.find(id)
+        begin
+          update_user = Author.find_by(id: id)
 
-        update_user.update!(attributes)
+          raise Errors::NotFound if update_user.nil?
 
-        # 마지막은 graphQL 결과물이어야 한다
-        update_user
+          update_user.update!(attributes)
+
+          # 마지막은 graphQL 결과물이어야 한다
+          update_user
+        rescue => exception
+          Rails.logger.info exception
+          SlackAlertModule.alert_error(
+            Errors::NOT_FOUND,
+            Errors::NOT_FOUND_MESSAGE,
+            exception,
+          )
+          raise exception
+        end
       end
     end
   end

@@ -2,45 +2,36 @@ class BookController < ApplicationController
   def index
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
   end
 
   def new
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
   end
 
   def create
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     # 입력받은 모든 params 유효한지 확인
@@ -51,13 +42,10 @@ class BookController < ApplicationController
           format.json do
             render json: newbook.errors, status: :unprocessable_entity
           end
-          request_method = request.request_method
-          request_fullpath = request.fullpath
           SlackAlertModule.alert_error(
             Errors::NOT_FOUND,
             Errors::NOT_FOUND_MESSAGE,
-            request_method,
-            request_fullpath,
+            Errors::NOT_FOUND_MESSAGE,
           )
           raise Errors::NotFound
         end
@@ -85,13 +73,10 @@ class BookController < ApplicationController
         format.json do
           render json: newbook.errors, status: :unprocessable_entity
         end
-        request_method = request.request_method
-        request_fullpath = request.fullpath
         SlackAlertModule.alert_error(
           Errors::NOT_FOUND,
           Errors::NOT_FOUND_MESSAGE,
-          request_method,
-          request_fullpath,
+          Errors::NOT_FOUND_MESSAGE,
         )
         raise Errors::NotFound
       end
@@ -102,25 +87,19 @@ class BookController < ApplicationController
   def before_update
     @user = Author.find_by(id: params[:id])
     if @user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
-      SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
-      )
-      raise Errors::UnAuthorized
-    end
-    @book = Book.find_by(id: params[:book_id])
-    if @book.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
+      )
+      raise Errors::NotFound
+    end
+    @book = Book.find_by(id: params[:book_id])
+    if @book.nil?
+      SlackAlertModule.alert_error(
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -129,26 +108,20 @@ class BookController < ApplicationController
   def update_book_info
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     book = Book.find_by(id: params[:book_id])
     if book.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
@@ -161,13 +134,10 @@ class BookController < ApplicationController
           format.json do
             render json: newbook.errors, status: :unprocessable_entity
           end
-          request_method = request.request_method
-          request_fullpath = request.fullpath
           SlackAlertModule.alert_error(
             Errors::NOT_FOUND,
             Errors::NOT_FOUND_MESSAGE,
-            request_method,
-            request_fullpath,
+            Errors::NOT_FOUND_MESSAGE,
           )
           raise Errors::NotFound
         end
@@ -200,26 +170,20 @@ class BookController < ApplicationController
   def delete
     user = Author.find_by(id: params[:id])
     if user.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
-        Errors::UNAUTHORIZED,
-        Errors::UNAUTHORIZED_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND,
+        Errors::NOT_FOUND_MESSAGE,
+        Errors::NOT_FOUND_MESSAGE,
       )
-      raise Errors::UnAuthorized
+      raise Errors::NotFound
     end
 
     book = Book.find_by(id: params[:book_id])
     if book.nil?
-      request_method = request.request_method
-      request_fullpath = request.fullpath
       SlackAlertModule.alert_error(
         Errors::NOT_FOUND,
         Errors::NOT_FOUND_MESSAGE,
-        request_method,
-        request_fullpath,
+        Errors::NOT_FOUND_MESSAGE,
       )
       raise Errors::NotFound
     end
