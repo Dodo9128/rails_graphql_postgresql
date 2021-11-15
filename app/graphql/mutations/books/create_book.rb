@@ -6,32 +6,33 @@ module Mutations
       argument :publication_date, Integer, required: true
       argument :genre, Types::Enums::Genre, required: true
 
-      #  argument :deleted_at, Integer, required: false
-
       type Types::BookType
 
       def resolve(author_id:, **attributes)
         begin
-          user = Author.find_by(id: author_id)
-          newbook = user.books.create!(attributes)
-
           # 유저 유효성 검사
+          user = Author.find_by(id: author_id)
+
           raise Errors::NotFound if user.nil?
 
+          newbook = user.books.create!(attributes)
+
           # 필요인자 유효성 검사
-          raise GraphQL::StandardError if newbook.nil?
+          raise Errors::InvalidOperation if newbook.nil?
 
           SlackAlertModule.generate_book(user, attributes)
 
           newbook
         rescue => exception
           Rails.logger.info exception
+
           SlackAlertModule.alert_error(
-            Errors::NOT_FOUND,
-            Errors::NOT_FOUND_MESSAGE,
+            exception.error_code,
+            exception.message,
             exception,
           )
-          raise exception
+
+          raise Errors.gql_error!(exception.error_code, exception.message)
         end
       end
     end

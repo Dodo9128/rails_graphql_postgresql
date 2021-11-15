@@ -18,7 +18,7 @@ module Mutations
 
           # 유저정보 없을 시 에러 도출
 
-          raise GraphQL::StandardError if newuser.nil?
+          raise Errors::InvalidOperation if newuser.nil?
 
           # 메세지 담긴 객체 만들어서 Slack Alert 처리
           messageObj = {
@@ -34,11 +34,11 @@ module Mutations
         rescue => exception
           Rails.logger.info exception
           SlackAlertModule.alert_error(
-            Errors::NOT_FOUND,
-            Errors::NOT_FOUND_MESSAGE,
+            exception.error_code,
+            exception.message,
             exception,
           )
-          raise exception
+          raise Errors.gql_error!(exception.error_code, exception.message)
         end
       end
     end

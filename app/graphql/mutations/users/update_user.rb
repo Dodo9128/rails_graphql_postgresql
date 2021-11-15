@@ -21,11 +21,11 @@ module Mutations
         rescue => exception
           Rails.logger.info exception
           SlackAlertModule.alert_error(
-            Errors::NOT_FOUND,
-            Errors::NOT_FOUND_MESSAGE,
+            exception.error_code,
+            exception.message,
             exception,
           )
-          raise exception
+          raise Errors.gql_error!(exception.error_code, exception.message)
         end
       end
     end

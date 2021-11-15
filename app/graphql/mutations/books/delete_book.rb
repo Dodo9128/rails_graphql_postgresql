@@ -18,13 +18,9 @@ module Mutations
           delete_book = Book.find_by(id: id)
 
           # 이미 삭제된 책일때
-          raise GrapuQL::StandareError if delete_book.deleted_at?
+          raise Errors::HasDeletedBook if delete_book.deleted_at?
 
-          # raise GraphQL::StandardError if delete_book.nil?
-
-          delete_book.update!(
-            deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'),
-          )
+          delete_book.update!(deleted_at: Time.now.strftime('%Y-%m-%d'))
 
           deletebook_info = { title: delete_book[:title] }
 
@@ -33,11 +29,11 @@ module Mutations
         rescue => exception
           Rails.logger.info exception
           SlackAlertModule.alert_error(
-            Errors::NOT_FOUND,
-            Errors::NOT_FOUND_MESSAGE,
+            exception.error_code,
+            exception.message,
             exception,
           )
-          raise exception
+          raise Errors.gql_error!(exception.error_code, exception.message)
         end
       end
     end

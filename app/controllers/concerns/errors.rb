@@ -27,11 +27,17 @@ module Errors
   NOT_FOUND = 404
   NOT_FOUND_MESSAGE = 'Not found Item'
 
+  ALREADY_DELETED_USER = 404
+  ALREADY_DELETED_USER_MESSAGE = 'This user has deleted already'
+
+  ALREADY_DELETED_BOOK = 404
+  ALREADY_DELETED_BOOK_MESSAGE = 'This book has deleted already'
+
   OPERATION_ERROR = 500
   OPERATION_ERROR_MESSAGE = 'Operation Error'
 
-  UPLOAD_IMAGE_ERROR = 500
-  UPLOAD_IMAGE_ERROR_MESSAGE = 'Upload Image Error'
+  SERVER_ERROR = 500
+  SERVER_ERROR_MESSAGE = 'Server Error'
 
   INVALID_FILE_EXTENSION_TYPE_MESSAGE = 'Invalid File Extension'
 
@@ -55,7 +61,6 @@ module Errors
   end
 
   class UnAuthorized < StandardError
-    puts 'Here is UnAuthorized Error Route'
     def message
       UNAUTHORIZED_MESSAGE
     end
@@ -130,6 +135,33 @@ module Errors
 
     def error_code
       OPERATION_ERROR
+    end
+  end
+
+  class ServerError < StandardError
+    def message
+      SERVER_ERROR_MESSAGE
+    end
+    def error_code
+      SERVER_ERROR
+    end
+  end
+
+  class HasDeletedUser < StandardError
+    def message
+      ALREADY_DELETED_USER_MESSAGE
+    end
+    def error_code
+      ALREADY_DELETED_USER
+    end
+  end
+
+  class HasDeletedBook < StandardError
+    def message
+      ALREADY_DELETED_BOOK_MESSAGE
+    end
+    def error_code
+      ALREADY_DELETED_BOOK
     end
   end
 end
