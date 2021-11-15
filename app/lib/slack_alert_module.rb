@@ -57,7 +57,6 @@ module SlackAlertModule
 
   # 책 삭제
   def self.delete_book(user, deletebook)
-    puts deletebook
     if deletebook.instance_of? Hash
       title = deletebook[:title]
       slack = Slack::Incoming::Webhooks.new ENV['SLACK_BOT_URL']

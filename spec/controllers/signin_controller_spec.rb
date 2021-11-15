@@ -15,14 +15,16 @@ RSpec.describe SigninController, type: :controller do
            }
       expect(response).to have_http_status(:found)
       expect(assigns(:newuser).class.name).to eq('Author')
+      expect(assigns(:newuser).first_name).to eq("I'm")
+      expect(assigns(:newuser).last_name).to eq('test user')
       #   ap json_body
     end
 
     it '#create2' do
       user = create(:author)
 
-      expect(user.first_name).to eq('1')
-      expect(user.last_name).to eq('1')
+      expect(user.first_name).to eq('C. K.')
+      expect(user.last_name).to eq('Louis')
 
       expect(response).to have_http_status(:ok)
       #   ap json_body

@@ -34,7 +34,7 @@ class AuthorController < ApplicationController
       raise Errors::NotFound
     end
 
-    user.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+    user.update(deleted_at: Time.now.strftime('%Y-%m-%d'))
 
     # user 삭제 시 user가 가진 book도 함께 삭제
 
@@ -49,7 +49,7 @@ class AuthorController < ApplicationController
     end
 
     userbooks.each do |userbook|
-      userbook.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+      userbook.update(deleted_at: Time.now.strftime('%Y-%m-%d'))
     end
 
     respond_to do |format|

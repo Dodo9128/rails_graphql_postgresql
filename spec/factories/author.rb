@@ -1,10 +1,10 @@
 FactoryBot.define do
-  # factory :author do
-  #   first_name { 'C. K.' }
-  #   last_name { 'Louis' }
-  #   date_of_birth { '1942-02-13' }
-  #   deleted_at { nil }
-  # end
+  factory :author do
+    first_name { 'C. K.' }
+    last_name { 'Louis' }
+    date_of_birth { '1942-02-13' }
+    deleted_at { nil }
+  end
 
   # factory :author do
   #   sequence(:first_name) { |n| "#{n} C. K." }
@@ -13,13 +13,13 @@ FactoryBot.define do
   #   deleted_at { nil }
   # end
 
-  factory :author do
-    sequence(:first_name) { |n| "#{n}" }
-    sequence(:last_name) { |n| "#{n}" }
-    sequence(:date_of_birth) { |n| "#{n}" }
-    deleted_at { nil }
-    # books { nil }
-  end
+  # factory :author do
+  #   sequence(:first_name) { |n| "#{n}" }
+  #   sequence(:last_name) { |n| "#{n}" }
+  #   sequence(:date_of_birth) { |n| "#{n}" }
+  #   deleted_at { nil }
+  #   # books { nil }
+  # end
 end
 
 # def user_without_book_maker()

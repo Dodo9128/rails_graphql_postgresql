@@ -190,7 +190,7 @@ class BookController < ApplicationController
 
     deletebook = book['title']
 
-    book.update(deleted_at: Time.now.strftime('%Y-%d-%m %H:%M:%S %Z'))
+    book.update(deleted_at: Time.now.strftime('%Y-%m-%d'))
 
     respond_to do |format|
       format.html { redirect_to "/author/#{user.id}" }

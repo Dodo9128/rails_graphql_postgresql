@@ -8,9 +8,9 @@ FactoryBot.define do
   # end
 
   factory :book do
-    sequence(:title) { |n| "#{n}" }
-    sequence(:genre) { |n| "#{n}" }
-    sequence(:publication_date) { |n| "#{n}" }
+    sequence(:title) { |n| "This is Testbook #{n}" }
+    sequence(:genre) { 'Horror' }
+    sequence(:publication_date) { 1984 }
     deleted_at { nil }
     association :author
   end
